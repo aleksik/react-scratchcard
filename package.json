@@ -1,0 +1,22 @@
+{
+  "name": "react-scratchcard",
+  "version": "1.0.0",
+  "description": "React component for displaying scratch card in your web app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "React",
+    "Scratchcard"
+  ],
+  "author": "Aleksi Kaistinen <aleksi.kaistinen@allu.io> (http://allu.io)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aleksik/react-scratchcard.git"
+  },
+  "dependencies": {
+    "react": "^15.0.0"
+  }
+}
