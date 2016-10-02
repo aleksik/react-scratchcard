@@ -1,6 +1,6 @@
 {
   "name": "react-scratchcard",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "React component for displaying scratch card in your web app.",
   "main": "dist/index.js",
   "scripts": {
