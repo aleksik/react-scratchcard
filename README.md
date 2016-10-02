@@ -2,6 +2,10 @@
 
 A react component for displaying scratch card in your web app.
 
+## Demo
+
+http://allu.io/react-scratchcard
+
 ## Installation
 
 ```
