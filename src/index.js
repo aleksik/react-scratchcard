@@ -5,39 +5,19 @@ class ScratchCard extends Component {
   constructor(props) {
     super(props);
     this.state = { loaded: false }
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseMove = this.handleMouseMove.bind(this);
-    this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
   componentDidMount() {
-
     this.isDrawing = false;
     this.lastPoint = null;
     this.ctx = this.canvas.getContext('2d');
 
-    this.image = new Image();
-    this.image.onload = () => {
-      this.ctx.drawImage(this.image, 0, 0);
-      this.setState({ loaded: true })
+    const image = new Image();
+    image.onload = () => {
+      this.ctx.drawImage(image, 0, 0);
+      this.setState({ loaded: true });
     }
-    this.image.src = this.props.image;
-
-    this.canvas.addEventListener('mousedown', this.handleMouseDown, false);
-    this.canvas.addEventListener('touchstart', this.handleMouseDown, false);
-    this.canvas.addEventListener('mousemove', this.handleMouseMove, false);
-    this.canvas.addEventListener('touchmove', this.handleMouseMove, false);
-    this.canvas.addEventListener('mouseup', this.handleMouseUp, false);
-    this.canvas.addEventListener('touchend', this.handleMouseUp, false);
-  }
-
-  componentWillUnmount() {
-    this.canvas.removeEventListener('mousedown', this.handleMouseDown, false);
-    this.canvas.removeEventListener('touchstart', this.handleMouseDown, false);
-    this.canvas.removeEventListener('mousemove', this.handleMouseMove, false);
-    this.canvas.removeEventListener('touchmove', this.handleMouseMove, false);
-    this.canvas.removeEventListener('mouseup', this.handleMouseUp, false);
-    this.canvas.removeEventListener('touchend', this.handleMouseUp, false);
+    image.src = this.props.image;
   }
 
   getFilledInPixels(stride) {
@@ -115,10 +95,12 @@ class ScratchCard extends Component {
     let x, y;
 
     for (let i = 0; i < distance; i++) {
-      x = this.lastPoint.x + (Math.sin(angle) * i) - 25;
-      y = this.lastPoint.y + (Math.cos(angle) * i) - 25;
+      x = this.lastPoint.x + (Math.sin(angle) * i);
+      y = this.lastPoint.y + (Math.cos(angle) * i);
       this.ctx.globalCompositeOperation = 'destination-out';
-      this.ctx.fillRect(x, y, 50, 50);
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, 25, 0, 2 * Math.PI, false);
+      this.ctx.fill();
     }
 
     this.lastPoint = currentPoint;
@@ -144,22 +126,31 @@ class ScratchCard extends Component {
 
     const canvasStyle = {
       position: 'absolute',
-      top: 0
+      top: 0,
+      zIndex: 1
     }
 
     const resultStyle = {
       visibility: this.state.loaded ? 'visible' : 'hidden'
     }
 
+    const canvasProps = {
+      ref: (ref) => this.canvas = ref,
+      className: 'ScratchCard__Canvas',
+      style: canvasStyle,
+      width: this.props.width,
+      height: this.props.height,
+      onMouseDown: this.handleMouseDown.bind(this),
+      onTouchStart: this.handleMouseDown.bind(this),
+      onMouseMove: this.handleMouseMove.bind(this),
+      onTouchMove: this.handleMouseMove.bind(this),
+      onMouseUp: this.handleMouseUp.bind(this),
+      onTouchEnd: this.handleMouseUp.bind(this)
+    }
+
     return (
       <div className="ScratchCard__Container" style={containerStyle}>
-        <canvas
-          ref={(ref) => this.canvas = ref}
-          className="ScratchCard__Canvas"
-          style={canvasStyle}
-          width={this.props.width}
-          height={this.props.height}
-        ></canvas>
+        <canvas {...canvasProps}></canvas>
         <div className="ScratchCard__Result" style={resultStyle}>
           {this.props.children}
         </div>
