@@ -27,9 +27,6 @@ var ScratchCard = function (_Component) {
     var _this = _possibleConstructorReturn(this, (ScratchCard.__proto__ || Object.getPrototypeOf(ScratchCard)).call(this, props));
 
     _this.state = { loaded: false };
-    _this.handleMouseDown = _this.handleMouseDown.bind(_this);
-    _this.handleMouseMove = _this.handleMouseMove.bind(_this);
-    _this.handleMouseUp = _this.handleMouseUp.bind(_this);
     return _this;
   }
 
@@ -42,29 +39,12 @@ var ScratchCard = function (_Component) {
       this.lastPoint = null;
       this.ctx = this.canvas.getContext('2d');
 
-      this.image = new Image();
-      this.image.onload = function () {
-        _this2.ctx.drawImage(_this2.image, 0, 0);
+      var image = new Image();
+      image.onload = function () {
+        _this2.ctx.drawImage(image, 0, 0);
         _this2.setState({ loaded: true });
       };
-      this.image.src = this.props.image;
-
-      this.canvas.addEventListener('mousedown', this.handleMouseDown, false);
-      this.canvas.addEventListener('touchstart', this.handleMouseDown, false);
-      this.canvas.addEventListener('mousemove', this.handleMouseMove, false);
-      this.canvas.addEventListener('touchmove', this.handleMouseMove, false);
-      this.canvas.addEventListener('mouseup', this.handleMouseUp, false);
-      this.canvas.addEventListener('touchend', this.handleMouseUp, false);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.canvas.removeEventListener('mousedown', this.handleMouseDown, false);
-      this.canvas.removeEventListener('touchstart', this.handleMouseDown, false);
-      this.canvas.removeEventListener('mousemove', this.handleMouseMove, false);
-      this.canvas.removeEventListener('touchmove', this.handleMouseMove, false);
-      this.canvas.removeEventListener('mouseup', this.handleMouseUp, false);
-      this.canvas.removeEventListener('touchend', this.handleMouseUp, false);
+      image.src = this.props.image;
     }
   }, {
     key: 'getFilledInPixels',
@@ -151,10 +131,12 @@ var ScratchCard = function (_Component) {
           y = void 0;
 
       for (var i = 0; i < distance; i++) {
-        x = this.lastPoint.x + Math.sin(angle) * i - 25;
-        y = this.lastPoint.y + Math.cos(angle) * i - 25;
+        x = this.lastPoint.x + Math.sin(angle) * i;
+        y = this.lastPoint.y + Math.cos(angle) * i;
         this.ctx.globalCompositeOperation = 'destination-out';
-        this.ctx.fillRect(x, y, 50, 50);
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, 25, 0, 2 * Math.PI, false);
+        this.ctx.fill();
       }
 
       this.lastPoint = currentPoint;
@@ -182,25 +164,34 @@ var ScratchCard = function (_Component) {
 
       var canvasStyle = {
         position: 'absolute',
-        top: 0
+        top: 0,
+        zIndex: 1
       };
 
       var resultStyle = {
         visibility: this.state.loaded ? 'visible' : 'hidden'
       };
 
+      var canvasProps = {
+        ref: function ref(_ref) {
+          return _this3.canvas = _ref;
+        },
+        className: 'ScratchCard__Canvas',
+        style: canvasStyle,
+        width: this.props.width,
+        height: this.props.height,
+        onMouseDown: this.handleMouseDown.bind(this),
+        onTouchStart: this.handleMouseDown.bind(this),
+        onMouseMove: this.handleMouseMove.bind(this),
+        onTouchMove: this.handleMouseMove.bind(this),
+        onMouseUp: this.handleMouseUp.bind(this),
+        onTouchEnd: this.handleMouseUp.bind(this)
+      };
+
       return _react2.default.createElement(
         'div',
         { className: 'ScratchCard__Container', style: containerStyle },
-        _react2.default.createElement('canvas', {
-          ref: function ref(_ref) {
-            return _this3.canvas = _ref;
-          },
-          className: 'ScratchCard__Canvas',
-          style: canvasStyle,
-          width: this.props.width,
-          height: this.props.height
-        }),
+        _react2.default.createElement('canvas', canvasProps),
         _react2.default.createElement(
           'div',
           { className: 'ScratchCard__Result', style: resultStyle },
@@ -221,4 +212,18 @@ ScratchCard.propTypes = {
   onComplete: _react2.default.PropTypes.func
 };
 
-exports.default = ScratchCard;
+var _default = ScratchCard;
+exports.default = _default;
+;
+
+var _temp = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(ScratchCard, 'ScratchCard', 'src/index.js');
+
+  __REACT_HOT_LOADER__.register(_default, 'default', 'src/index.js');
+}();
+
+;
