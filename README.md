@@ -12,22 +12,22 @@ http://allu.io/react-scratchcard
 $ npm install react-scratchcard
 ```
 
-## Usage
+## Example
 
 ```javascript
-import ScratchCard from 'react-scratchcard'
+import React from 'react';
+import ScratchCard from 'react-scratchcard';
 
-function Example() {
-  return (
-    <ScratchCard
-      width={500}
-      height={500}
-      image="/path/to/image.png"
-      finishPercent={50}
-      onComplete={() => console.log('The card is now clear!')}
-    >
-      <div>This will be revealed by scratching the card!</div>
-    </ScratchCard>  
-  )
-}
+const settings = {
+  width: 640,
+  height: 480,
+  image: 'image.jpg',
+  finishPercent: 50,
+  onComplete: () => console.log('The card is now clear!')
+};
+
+const Example = () =>
+  <ScratchCard {...settings}>
+    Congratulations! You WON!
+  </ScratchCard>;
 ```
