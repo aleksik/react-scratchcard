@@ -40,6 +40,7 @@ var ScratchCard = function (_Component) {
       this.ctx = this.canvas.getContext('2d');
 
       var image = new Image();
+      image.crossOrigin = "Anonymous";
       image.onload = function () {
         _this2.ctx.drawImage(image, 0, 0);
         _this2.setState({ loaded: true });
