@@ -13,6 +13,7 @@ class ScratchCard extends Component {
     this.ctx = this.canvas.getContext('2d');
 
     const image = new Image();
+    image.crossOrigin = "Anonymous";
     image.onload = () => {
       this.ctx.drawImage(image, 0, 0);
       this.setState({ loaded: true });
