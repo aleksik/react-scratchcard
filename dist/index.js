@@ -69,22 +69,17 @@ var ScratchCard = function (_Component) {
   }, {
     key: 'getMouse',
     value: function getMouse(e, canvas) {
-      var offsetX = 0;
-      var offsetY = 0;
-      var mx = void 0,
-          my = void 0;
+      var _canvas$getBoundingCl = canvas.getBoundingClientRect(),
+          top = _canvas$getBoundingCl.top,
+          left = _canvas$getBoundingCl.left;
 
-      if (canvas.offsetParent !== undefined) {
-        do {
-          offsetX += canvas.offsetLeft;
-          offsetY += canvas.offsetTop;
-        } while (canvas = canvas.offsetParent);
-      }
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
-      mx = (e.pageX || e.touches[0].clientX) - offsetX;
-      my = (e.pageY || e.touches[0].clientY) - offsetY;
-
-      return { x: mx, y: my };
+      return {
+        x: (e.pageX || e.touches[0].clientX) - left - scrollLeft,
+        y: (e.pageY || e.touches[0].clientY) - top - scrollTop
+      };
     }
   }, {
     key: 'distanceBetween',
