@@ -40,21 +40,14 @@ class ScratchCard extends Component {
   }
 
   getMouse(e, canvas) {
-    let offsetX = 0;
-    let offsetY = 0;
-    let mx, my;
+    const {top, left} = canvas.getBoundingClientRect();
+    const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
-    if (canvas.offsetParent !== undefined) {
-      do {
-        offsetX += canvas.offsetLeft;
-        offsetY += canvas.offsetTop;
-      } while ((canvas = canvas.offsetParent));
+    return {
+        x: (e.pageX || e.touches[0].clientX) - left - scrollLeft,
+        y: (e.pageY || e.touches[0].clientY) - top - scrollTop
     }
-
-    mx = (e.pageX || e.touches[0].clientX) - offsetX;
-    my = (e.pageY || e.touches[0].clientY) - offsetY;
-
-    return { x: mx, y: my }
   }
 
   distanceBetween(point1, point2) {
