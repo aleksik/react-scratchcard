@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
+import classnames from "classnames"
 
 class ScratchCard extends Component {
 
@@ -8,17 +9,36 @@ class ScratchCard extends Component {
   }
 
   componentDidMount() {
+    const { cover } = this.props
     this.isDrawing = false;
     this.lastPoint = null;
     this.ctx = this.canvas.getContext('2d');
 
-    const image = new Image();
-    image.crossOrigin = "Anonymous";
-    image.onload = () => {
-      this.ctx.drawImage(image, 0, 0);
+    const isColorCover = this.checkColorCover(cover)
+
+    if (!isColorCover) {
+      const image = new Image();
+      image.crossOrigin = "Anonymous";
+      image.onload = () => {
+        this.ctx.drawImage(image, 0, 0);
+        this.setState({ loaded: true });
+      }
+      image.src = cover;
+    } else {
+      const { width, height } = this.canvas
+      this.ctx.save()
+      this.ctx.fillStyle = cover
+      this.ctx.beginPath()
+      this.ctx.rect(0, 0, width, height)
+      this.ctx.fill()
+      this.ctx.restore()
       this.setState({ loaded: true });
     }
-    image.src = this.props.image;
+
+  }
+
+  checkColorCover(cover) {
+    return (/^#(\d|\w){3,6}$/.test(cover) || /^rgba?\(.*\)/.test(cover))
   }
 
   getFilledInPixels(stride) {
@@ -40,13 +60,13 @@ class ScratchCard extends Component {
   }
 
   getMouse(e, canvas) {
-    const {top, left} = canvas.getBoundingClientRect();
-    const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
+    const { top, left } = canvas.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
     return {
-        x: (e.pageX || e.touches[0].clientX) - left - scrollLeft,
-        y: (e.pageY || e.touches[0].clientY) - top - scrollTop
+      x: (e.pageX || e.touches[0].clientX) - left - scrollLeft,
+      y: (e.pageY || e.touches[0].clientY) - top - scrollTop
     }
   }
 
@@ -70,15 +90,13 @@ class ScratchCard extends Component {
     }
   }
 
-  handleMouseDown(e) {
+  handleMouseDown = (e) => {
     this.isDrawing = true;
     this.lastPoint = this.getMouse(e, this.canvas);
   }
 
-  handleMouseMove(e) {
-    if (!this.isDrawing) {
-      return;
-    }
+  handleMouseMove = (e) => {
+    if (!this.isDrawing) return;
 
     e.preventDefault();
 
@@ -102,15 +120,26 @@ class ScratchCard extends Component {
 
   }
 
-  handleMouseUp() {
+  handleMouseUp = () => {
     this.isDrawing = false;
   }
 
   render() {
+    const {
+      width,
+      height,
+      cover,
+      finishPercent,
+      onComplete,
+      className,
+      ...attr
+    } = this.props
+
+    const { loaded } = this.state
 
     const containerStyle = {
-      width: this.props.width + 'px',
-      height: this.props.height + 'px',
+      width,
+      height,
       position: 'relative',
       WebkitUserSelect: 'none',
       MozUserSelect: 'none',
@@ -125,25 +154,29 @@ class ScratchCard extends Component {
     }
 
     const resultStyle = {
-      visibility: this.state.loaded ? 'visible' : 'hidden'
+      visibility: loaded ? 'visible' : 'hidden'
     }
 
     const canvasProps = {
       ref: (ref) => this.canvas = ref,
       className: 'ScratchCard__Canvas',
       style: canvasStyle,
-      width: this.props.width,
-      height: this.props.height,
-      onMouseDown: this.handleMouseDown.bind(this),
-      onTouchStart: this.handleMouseDown.bind(this),
-      onMouseMove: this.handleMouseMove.bind(this),
-      onTouchMove: this.handleMouseMove.bind(this),
-      onMouseUp: this.handleMouseUp.bind(this),
-      onTouchEnd: this.handleMouseUp.bind(this)
+      width,
+      height,
+      onMouseDown: this.handleMouseDown,
+      onTouchStart: this.handleMouseDown,
+      onMouseMove: this.handleMouseMove,
+      onTouchMove: this.handleMouseMove,
+      onMouseUp: this.handleMouseUp,
+      onTouchEnd: this.handleMouseUp
     }
 
     return (
-      <div className="ScratchCard__Container" style={containerStyle}>
+      <div
+        className={classnames("ScratchCard__Container", className)}
+        style={containerStyle}
+        {...attr}
+      >
         <canvas {...canvasProps}></canvas>
         <div className="ScratchCard__Result" style={resultStyle}>
           {this.props.children}
@@ -155,11 +188,11 @@ class ScratchCard extends Component {
 }
 
 ScratchCard.propTypes = {
-  image: React.PropTypes.string.isRequired,
-  width: React.PropTypes.number.isRequired,
-  height: React.PropTypes.number.isRequired,
-  finishPercent: React.PropTypes.number.isRequired,
-  onComplete: React.PropTypes.func
+  cover: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  finishPercent: PropTypes.number.isRequired,
+  onComplete: PropTypes.func
 }
 
 export default ScratchCard;
