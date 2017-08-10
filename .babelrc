@@ -4,6 +4,10 @@
     "es2015"
   ],
   "plugins": [
+    "transform-decorators-legacy",      
+    "transform-object-rest-spread",   
+    "transform-class-properties",    
+    "transform-runtime",
     "react-hot-loader/babel"
   ]
 }

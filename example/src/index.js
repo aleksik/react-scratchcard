@@ -7,7 +7,7 @@ import cardImage from './card.jpg';
 const settings = {
   width: 640,
   height: 480,
-  image: cardImage,
+  cover: "#396",
   finishPercent: 50,
   onComplete: () => console.log('The card is now clear!')
 };
