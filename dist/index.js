@@ -77,8 +77,8 @@ var ScratchCard = function (_Component) {
       var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
       return {
-        x: (e.pageX || e.touches[0].clientX) - left - scrollLeft,
-        y: (e.pageY || e.touches[0].clientY) - top - scrollTop
+        x: (e.clientX || e.touches[0].clientX) - left - scrollLeft,
+        y: (e.clientY || e.touches[0].clientY) - top - scrollTop
       };
     }
   }, {
