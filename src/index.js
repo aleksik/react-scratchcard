@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types;
 
 class ScratchCard extends Component {
 
@@ -155,11 +156,11 @@ class ScratchCard extends Component {
 }
 
 ScratchCard.propTypes = {
-  image: React.PropTypes.string.isRequired,
-  width: React.PropTypes.number.isRequired,
-  height: React.PropTypes.number.isRequired,
-  finishPercent: React.PropTypes.number.isRequired,
-  onComplete: React.PropTypes.func
+  image: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  finishPercent: PropTypes.number.isRequired,
+  onComplete: PropTypes.func
 }
 
 export default ScratchCard;
