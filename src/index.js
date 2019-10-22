@@ -20,8 +20,8 @@ class ScratchCard extends Component {
 			};
 			image.src = this.props.image;
 		} else {
-			ctx.fillStyle = this.props.placeholderColor;
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			this.ctx.fillStyle = this.props.placeholderColor;
+			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		}
 	}
 
