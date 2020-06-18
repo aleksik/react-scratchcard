@@ -56,7 +56,7 @@ class ScratchCard extends Component {
 
 		return {
 			x: (e.pageX || e.touches[0].clientX) - left - scrollLeft,
-			y: (e.pageY || e.touches[0].clientY) - top - scrollTop
+			y: (e.pageY || e.touches[0].clientY) - top - scrollTop,
 		};
 	}
 
@@ -116,24 +116,27 @@ class ScratchCard extends Component {
 	}
 
 	render() {
-		const containerStyle = {
-			width: this.props.width + 'px',
-			height: this.props.height + 'px',
-			position: 'relative',
-			WebkitUserSelect: 'none',
-			MozUserSelect: 'none',
-			msUserSelect: 'none',
-			userSelect: 'none'
-		};
+		const containerStyle = Object.assign(
+			{
+				width: this.props.width + 'px',
+				height: this.props.height + 'px',
+				position: 'relative',
+				WebkitUserSelect: 'none',
+				MozUserSelect: 'none',
+				msUserSelect: 'none',
+				userSelect: 'none',
+			},
+			this.props.style || {}
+		);
 
 		const canvasStyle = {
 			position: 'absolute',
 			top: 0,
-			zIndex: 1
+			zIndex: 1,
 		};
 
 		const resultStyle = {
-			visibility: this.state.loaded ? 'visible' : 'hidden'
+			visibility: this.state.loaded ? 'visible' : 'hidden',
 		};
 
 		const canvasProps = {
@@ -147,7 +150,7 @@ class ScratchCard extends Component {
 			onMouseMove: this.handleMouseMove.bind(this),
 			onTouchMove: this.handleMouseMove.bind(this),
 			onMouseUp: this.handleMouseUp.bind(this),
-			onTouchEnd: this.handleMouseUp.bind(this)
+			onTouchEnd: this.handleMouseUp.bind(this),
 		};
 
 		return (
@@ -160,7 +163,5 @@ class ScratchCard extends Component {
 		);
 	}
 }
-
-
 
 export default ScratchCard;

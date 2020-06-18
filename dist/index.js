@@ -153,7 +153,7 @@ var ScratchCard = function (_Component) {
 		value: function render() {
 			var _this3 = this;
 
-			var containerStyle = {
+			var containerStyle = Object.assign({
 				width: this.props.width + 'px',
 				height: this.props.height + 'px',
 				position: 'relative',
@@ -161,7 +161,7 @@ var ScratchCard = function (_Component) {
 				MozUserSelect: 'none',
 				msUserSelect: 'none',
 				userSelect: 'none'
-			};
+			}, this.props.style || {});
 
 			var canvasStyle = {
 				position: 'absolute',
