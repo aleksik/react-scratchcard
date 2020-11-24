@@ -17,6 +17,10 @@ class ScratchCard extends Component {
 			image.onload = () => {
 				this.ctx.drawImage(image, 0, 0, this.props.width, this.props.height);
 				this.setState({ loaded: true });
+
+				if (typeof this.props.onImageLoadFinished === 'function') {
+					this.props.onImageLoadFinished();
+				}
 			};
 			image.src = this.props.image;
 		} else {

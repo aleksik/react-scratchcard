@@ -45,6 +45,10 @@ var ScratchCard = function (_Component) {
 				image.onload = function () {
 					_this2.ctx.drawImage(image, 0, 0, _this2.props.width, _this2.props.height);
 					_this2.setState({ loaded: true });
+
+					if (typeof _this2.props.onImageLoadFinished === 'function') {
+						_this2.props.onImageLoadFinished();
+					}
 				};
 				image.src = this.props.image;
 			} else {
