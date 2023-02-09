@@ -42,8 +42,9 @@ class ScratchCard extends Component {
 		);
 		const total = pixels.data.length / stride;
 		let count = 0;
-
-		for (let i = 0; i < pixels.data.length; i += stride) {
+		
+		//In the original package, they start at i = 0, but doing it this way is wrong because we check the red value of pixels instead of alpha (opacity) value
+		for (let i = 3; i < pixels.data.length; i += stride) {
 			if (parseInt(pixels.data[i], 10) === 0) {
 				count++;
 			}
