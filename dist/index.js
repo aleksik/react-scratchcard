@@ -67,7 +67,8 @@ var ScratchCard = function (_Component) {
 			var total = pixels.data.length / stride;
 			var count = 0;
 
-			for (var i = 0; i < pixels.data.length; i += stride) {
+			//In the original package, they start at i = 0, but doing it this way is wrong because we check the red value of pixels instead of alpha (opacity) value
+			for (var i = 3; i < pixels.data.length; i += stride) {
 				if (parseInt(pixels.data[i], 10) === 0) {
 					count++;
 				}
