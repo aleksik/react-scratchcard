@@ -19,17 +19,15 @@ import React from 'react';
 import ScratchCard from 'react-scratchcard';
 
 const settings = {
-  width: 640,
-  height: 480,
-  image: 'image.jpg',
-  finishPercent: 50,
-  onComplete: () => console.log('The card is now clear!')
+	width: 640,
+	height: 480,
+	image: 'image.jpg',
+	finishPercent: 50
 };
 
-const Example = () =>
-  <ScratchCard {...settings}>
-    Congratulations! You WON!
-  </ScratchCard>;
+const Example = () => (
+	<ScratchCard {...settings}>Congratulations! You WON!</ScratchCard>
+);
 ```
 
 ## Credits
